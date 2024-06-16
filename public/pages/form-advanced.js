@@ -39,7 +39,7 @@
             toggleActive: true
         });
 
-        //Bootstrap-MaxLength
+        Bootstrap-MaxLength
         $('input#defaultconfig').maxlength();
 
         $('input#thresholdconfig').maxlength({

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\WorkingOrderController;
 
 /*
@@ -52,7 +53,10 @@ Route::get('input-working-order', [WorkingOrderController::class, 'index'])->nam
 Route::get('employee-data', [EmployeeController::class, 'index'])->name('employee-data')->middleware('auth');
 Route::post('employee-datatable', [EmployeeController::class, 'data'])->name('employee-datatable');
 
-
+// DEPARTMENT
 Route::get('department-data', [DepartmentController::class, 'index'])->name('department-data')->middleware('auth');
+Route::get('create-new-department', [DepartmentController::class, 'createNew'])->name('create-new-department')->middleware('auth');
+
+
 Route::get('location-data', [LocationController::class, 'index'])->name('location-data')->middleware('auth');
 Route::get('device-data', [DeviceController::class, 'index'])->name('device-data')->middleware('auth');
