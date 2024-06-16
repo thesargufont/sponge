@@ -175,10 +175,10 @@
                         <li class="has_sub">
                             <a href="javascript:void(0);" class="waves-effect"><i class="ti-files"></i><span> Admin Panel </span><span class="pull-right"><i class="mdi mdi-plus"></i></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="#">Data Karyawan</a></li>
-                                <li><a href="#">Data Bagian</a></li>
-                                <li><a href="#">Data Lokasi</a></li>
-                                <li><a href="#">Data Peralatan</a></li>
+                                <li><a href="{{ route('employee-data') }}">Data Karyawan</a></li>
+                                <li><a href="{{ route('department-data') }}">Data Bagian</a></li>
+                                <li><a href="{{ route('location-data') }}">Data Lokasi</a></li>
+                                <li><a href="{{ route('device-data') }}">Data Peralatan</a></li>
                             </ul>
                         </li>
                     </ul>

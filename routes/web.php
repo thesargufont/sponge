@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WorkingOrderController;
 
@@ -41,3 +42,17 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 */
 // WORKING ORDER
 Route::get('input-working-order', [WorkingOrderController::class, 'index'])->name('input-working-order')->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN PANEL
+|--------------------------------------------------------------------------
+*/
+// ERMOPLOYEE
+Route::get('employee-data', [EmployeeController::class, 'index'])->name('employee-data')->middleware('auth');
+Route::post('employee-datatable', [EmployeeController::class, 'data'])->name('employee-datatable');
+
+
+Route::get('department-data', [DepartmentController::class, 'index'])->name('department-data')->middleware('auth');
+Route::get('location-data', [LocationController::class, 'index'])->name('location-data')->middleware('auth');
+Route::get('device-data', [DeviceController::class, 'index'])->name('device-data')->middleware('auth');
