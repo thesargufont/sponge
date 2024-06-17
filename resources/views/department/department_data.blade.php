@@ -15,7 +15,7 @@
         <div class="btn-group" role="group">
             <div class="form-group">
                 <button title="show/hide data filter options" type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#main-table-data-filter" aria-expanded="false" aria-controls="main-table-data-filter">{{ucfirst(__('data filter'))}}..</button>
-                <button type="button" name="create_new" id="create_new" class="btn btn-secondary" onclick="location.replace('{{url('create-new-department')}}');"><i class="fa fa-plus"></i> {{ucwords(__('New'))}}</button>
+                <button type="button" name="create_new" id="create_new" class="btn btn-secondary" onclick="location.replace('{{url('create-new-department')}}');"><i class="fa fa-plus"></i> {{ucwords(__('Tambah Baru'))}}</button>
                 <button type="button" name="download" id="download" class="btn btn-secondary"><i class="fa fa-fw fa-file-excel-o"></i> {{ucwords(__('Download'))}}</button>
                 <button type="button" name="upload" id="upload" class="btn btn-secondary"><i class="fa fa-upload"></i> {{ucwords(__('Upload'))}}</button>
             </div>
@@ -33,9 +33,9 @@
                             <div class="col-md-6">
                                 <input id="department_name" type="text" class="text-uppercase form-control" name="department_name" title="NAMA BAGIAN" placeholder="NAMA BAGIAN">
                                 <input name="department_name_id" id="department_name_id" type="hidden"/>
-                                <div class="input-group-append">
+                                {{-- <div class="input-group-append">
                                     <button class="btn btn-info" type="button" onclick="departmentName();"><i class="fa fa-ellipsis-h"></i></button>    
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <br>
@@ -53,7 +53,7 @@
                         <br>
 
                         {{-- TANGGAKL EFEKTIF --}}
-                        <div class="row mb-2">
+                        {{-- <div class="row mb-2">
                             <label class="col-sm-2">TANGGAL EFEKTIF</label>
                             <div class="col-sm-6">
                                 <div class="input-daterange input-group" id="date-range">
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
+                        <br> --}}
 
                         <br>
                         <br>
@@ -88,13 +88,15 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>Nama</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Email</th>
                                 <th>Bagian</th>
-                                <th>Lokasi</th>
+                                <th>Deskripsi</th>
                                 <th>Status</th>
-                                <th>No. Telp</th>
+                                <th>Start Effective</th>
+                                <th>End Effective</th>
+                                <th>Dibuat Oleh</th>
+                                <th>Dibuat Pada</th>
+                                <th>Diubah Oleh</th>
+                                <th>Diubah Pada</th>
                             </tr>
                         </thead>
                     </table>
@@ -135,26 +137,27 @@
                 infoEmpty:      ""
             },
             ajax: {
-                'url': '{!! route('employee-datatable') !!}',
+                'url': '{!! route('department-data/department-datatable') !!}',
                 'type': 'POST',
                 'headers': {
                     'X-CSRF-TOKEN': '{!! csrf_token() !!}'
                 },
                 'data': function (d) {
-                            d.employee_name = $('#employee_name').val();
-                            d.employee_name_id = $('#employee_name_id').val();
-                            d.status = $('#status').val();
-                        }
+                    d.department_name  = $('#department_name').val();
+                    d.status           = $('#status').val();
+                }
             },
             columns: [
                 { data: 'action', name: 'action', orderable: false, searchable: false}, 
-                { data : 'name' ,                   name :  'name'                   },
-                { data : 'gender' ,                 name :  'gender'                 },
-                { data : 'email' ,                  name :  'email'                  },
-                { data : 'department' ,             name :  'department'             },
-                { data : 'location' ,               name :  'location'               },
-                { data : 'status' ,                 name :  'status',                },
-                { data : 'telephone' ,              name :  'telephone',             },
+                { data : 'department' ,               name :  'department'               },
+                { data : 'department_description' ,   name :  'department_description'   },
+                { data : 'active' ,                   name :  'active'                   },
+                { data : 'start_effective' ,          name :  'start_effective'          },
+                { data : 'end_effective' ,            name :  'end_effective'            },
+                { data : 'created_by' ,               name :  'created_by',              },
+                { data : 'created_at' ,               name :  'created_at',              },
+                { data : 'updated_by' ,               name :  'updated_by',              },
+                { data : 'updated_at' ,               name :  'updated_at',              },
             ],
             // order: [[ 2, "desc" ]],
             rowCallback: function( row, data, iDisplayIndex ) {

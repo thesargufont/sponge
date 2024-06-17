@@ -55,7 +55,9 @@ Route::post('employee-datatable', [EmployeeController::class, 'data'])->name('em
 
 // DEPARTMENT
 Route::get('department-data', [DepartmentController::class, 'index'])->name('department-data')->middleware('auth');
+Route::post('department-data/department-datatable', [DepartmentController::class, 'data'])->name('department-data/department-datatable')->middleware('auth');
 Route::get('create-new-department', [DepartmentController::class, 'createNew'])->name('create-new-department')->middleware('auth');
+Route::post('create-new-department/create', [DepartmentController::class, 'submitData'])->name('create-new-department/create')->middleware('auth');
 
 
 Route::get('location-data', [LocationController::class, 'index'])->name('location-data')->middleware('auth');
