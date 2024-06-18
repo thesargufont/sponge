@@ -32,7 +32,7 @@ class CreateTableDeviceGeneralCodes1406241321 extends Migration
             $table->unsignedBigInteger('updated_by'); 
             $table->dateTime('updated_at')->nullable();
 
-            $table->unique(['section', 'label', 'reff1', 'reff2', 'reff3', 'reff4', 'reff5', 'start_effective'],'general_codes_1_unique');
+            // $table->unique(['section', 'label', 'reff1', 'reff2', 'reff3', 'start_effective'],'general_codes_1_unique');
             $table->index(['section', 'label', 'reff1'], 'general_codes_1_index');
         });
     }
