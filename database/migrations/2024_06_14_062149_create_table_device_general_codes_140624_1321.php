@@ -13,6 +13,8 @@ class CreateTableDeviceGeneralCodes1406241321 extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('general_codes');
+        
         Schema::create('general_codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('section','50');
