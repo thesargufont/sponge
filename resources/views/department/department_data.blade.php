@@ -16,8 +16,8 @@
             <div class="form-group">
                 <button title="show/hide data filter options" type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#main-table-data-filter" aria-expanded="false" aria-controls="main-table-data-filter">{{ucfirst(__('data filter'))}}..</button>
                 <button type="button" name="create_new" id="create_new" class="btn btn-secondary" onclick="location.replace('{{url('create-new-department')}}');"><i class="fa fa-plus"></i> {{ucwords(__('Tambah Baru'))}}</button>
-                <button type="button" name="download" id="download" class="btn btn-secondary"><i class="fa fa-fw fa-file-excel-o"></i> {{ucwords(__('Download'))}}</button>
-                <button type="button" name="upload" id="upload" class="btn btn-secondary"><i class="fa fa-upload"></i> {{ucwords(__('Upload'))}}</button>
+                <button type="button" name="download" id="btn_download_xlsx" class="btn btn-secondary"><i class="fa fa-fw fa-file-excel-o"></i> {{ucwords(__('Download'))}}</button>
+                <button type="button" name="upload" id="btn_upload_xlsx" class="btn btn-secondary"><i class="fa fa-upload"></i> {{ucwords(__('Upload'))}}</button>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Data Karyawan</h3>
+                    <h3 class="panel-title">Data Bagian</h3>
                 </div>
                 <div class="panel-body">
                     <table  id="main-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -175,6 +175,17 @@
             e.preventDefault();
         });
     });
+
+    $('#btn_download_xlsx').click(function() {
+        $('#search-form').submit();
+        $('#main-table').DataTable().ajax.reload();
+        var uri = encodeURI("{{url('department-data/export_excel')}}");
+        window.open(uri,'_blank');
+    });
+
+    $('#btn_upload_xlsx').click(function() {
+    location.replace('{{ url('department-data/import-excel') }}');
+});
 </script>
 @endsection
 

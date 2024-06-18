@@ -12,6 +12,10 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "laravelcollective/html": "^5.8",
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.29",
+        "rap2hpoutre/fast-excel": "^4.1",
         "yajra/laravel-datatables-oracle": "^9.21"
     },
     "require-dev": {

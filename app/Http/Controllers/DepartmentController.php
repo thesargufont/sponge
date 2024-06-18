@@ -8,8 +8,11 @@ use Carbon\Carbon;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\DepartmentHist;
+use App\Exports\DepartmentExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Yajra\DataTables\Facades\DataTables;
   
 class DepartmentController extends Controller
@@ -95,8 +98,20 @@ class DepartmentController extends Controller
 
     public function getData($request,$isExcel='')
     {
-        $department_name  = strtoupper($request->department_name);
-        $status           = strtoupper($request->status);
+        
+        if($isExcel == "")
+        {
+            session([
+                    'department'.'.department_name' => $request->has('department_name')?  $request->input('department_name') : '',
+                    'department'.'.status' => $request->has('status')?  $request->input('status'): '', 
+            ]);
+        } 
+
+        $department_name  = session('department'.'.department_name')!=''?session('department'.'.department_name'):'';
+        $status           = session('department'.'.status')!=''?session('department'.'.status'):'';
+
+        $department_name  = strtoupper($department_name);
+        $status           = strtoupper($status);
 
         $departmentDatas = Department::where('active', $status);
         
@@ -155,5 +170,94 @@ class DepartmentController extends Controller
         });
 
         return $datatables->make(TRUE);
+    }
+
+    public function exportExcel()
+    {
+        $datas = $this->getData(null, 'excel');
+        return Excel::download(new DepartmentExport($datas), 'DepartmentMaster.xlsx');
+    }
+
+    public function importExcel()
+    {
+        return view('department.upload');
+    }
+
+    public function uploadDepartment(Request $request)
+    {
+        $countError = 0;
+        $success   = false;
+        if($request->hasfile('validatedCustomFile'))
+        {
+            $name = $request->file('validatedCustomFile')->getClientOriginalName();
+            $filename = $name;
+            $ext = pathinfo($name, PATHINFO_EXTENSION);
+            if (strtolower($ext) != 'xlsx') {
+                $filename = "";
+                $message = '<div class="alert alert-danger">format file tidak sesuai</div>';
+                // $error    = ucfirst(__('format file tidak sesuai'));
+                $success    = false;
+                return response()->json(['filename'    => $filename,
+                                         'message'    => $message,
+                                         'success'    => $success,
+                                        ]);
+            }
+
+            $extension = $request->file('validatedCustomFile')->getClientOriginalExtension();
+            
+            $name = "Department" . "_" . Auth::user()->id . "." . $extension;
+            $request->file('validatedCustomFile')->move(storage_path().'/app/uploads/', $name);  
+            $attachments = storage_path().'/app/uploads/'. $name; 
+
+            $data = (new FastExcel)->import($attachments);
+
+            foreach ($data as $row) {
+                $error = 0;
+
+                $department              = trim(strtoupper($row['Nama Bidang']), ' ');
+                $department_description  = trim(strtoupper($row['Deskripsi']), ' ');
+                
+                $checkDuplicateData = Department::where('department', $department)
+                                        ->where('active', 1)
+                                        ->first();
+
+                if($checkDuplicateData){
+                    $error++;
+                }
+                
+                if($department_description == ''){
+                    $error++;
+                }
+
+                if($error > 0){
+                    $countError++;
+                }
+            }
+
+            if($countError > 0){
+                $success   = false;
+                $message   = '<div class="alert alert-danger">Terdapat data error, harap periksa kembali file '.$filename.'</div>';
+            } else {
+                $success   = true;
+                $message   = '<div class="alert alert-success">Validasi data berhasil, data dapat disimpan</div>';
+            }
+
+            return response()->json(['filename'  => $filename,
+                                     'success'  => $success,
+                                     'message'  => $message,
+                                    ]);
+        } else {
+            $message   = '<div class="alert alert-danger">Pilih file...</div>';
+            return response()->json(['filename'  => '',
+                                     'success'  => $success,
+                                     'message'  => $message,
+                                    ]);
+        }
+    }
+
+    public function downloadDepartmentTemplate()
+    {
+        $filename = 'Template_Master_Bidang.xlsx';
+        return response()->download(storage_path('app/files/'.$filename));
     }
 }

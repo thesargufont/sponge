@@ -56,6 +56,12 @@ Route::post('employee-datatable', [EmployeeController::class, 'data'])->name('em
 // DEPARTMENT
 Route::get('department-data', [DepartmentController::class, 'index'])->name('department-data')->middleware('auth');
 Route::post('department-data/department-datatable', [DepartmentController::class, 'data'])->name('department-data/department-datatable')->middleware('auth');
+Route::get('department-data/export_excel', [DepartmentController::class, 'exportExcel'])->name('department-data/export_excel')->middleware('auth');
+Route::get('department-data/import-excel', [DepartmentController::class, 'importExcel'])->name('department-data/import-excel')->middleware('auth');
+Route::get('department-data/download-department-template', [DepartmentController::class, 'downloadDepartmentTemplate'])->name('department-data/download-department-template')->middleware('auth');
+Route::post('department-data/upload-department', [DepartmentController::class, 'uploadDepartment'])->name('department-data/upload-department')->middleware('auth');
+Route::post('department-data/display-upload-department', [DepartmentController::class, 'displayUploadDepartment'])->name('department-data/display-upload-department')->middleware('auth');
+
 Route::get('create-new-department', [DepartmentController::class, 'createNew'])->name('create-new-department')->middleware('auth');
 Route::post('create-new-department/create', [DepartmentController::class, 'submitData'])->name('create-new-department/create')->middleware('auth');
 
